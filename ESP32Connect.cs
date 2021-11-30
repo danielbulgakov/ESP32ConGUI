@@ -13,6 +13,11 @@ namespace ConnectionProtocol
     enum KeyWords { 
         DataSplit = 255,
     }
+    enum FunType {
+        Gyroscope = 0,
+        Pulsometer
+    }
+
 
     class ESP32Connect
     {
@@ -52,7 +57,7 @@ namespace ConnectionProtocol
             try
             {
                 buffer = await serialPort.ReadAsync(BytesPerPackage);
-                if(buffer[0] == 255)
+                if(buffer[0] == (int) KeyWords.DataSplit)
                 {
                     DATA = buffer;
                 }
@@ -65,12 +70,20 @@ namespace ConnectionProtocol
 
         public bool PackageIsEmpty()
         {
-            for (int i = 2; i <= BytesPerPackage -1 ; i++)
-            {
-                if (DATA[i] != 0) return false;
-            }
-            return true;
+            if (DATA[0] != (int) KeyWords.DataSplit) return true;
+            return false;
         }
+
+        
+        private byte[] Get2ByteWord(int StartIndex)
+        {
+            byte[] buffer = new byte[2];
+            buffer[0] = DATA[StartIndex];
+            buffer[1] = DATA[StartIndex + 1];
+            return buffer;
+        }
+
+
 
         public int[] Get3Digits()
         {
@@ -84,13 +97,6 @@ namespace ConnectionProtocol
             return Digits;
         }
 
-        private byte[] Get2ByteWord(int StartIndex)
-        {
-            byte[] buffer = new byte[2];
-            buffer[0] = DATA[StartIndex];
-            buffer[1] = DATA[StartIndex + 1];
-            return buffer;
-        }
 
     }
 }

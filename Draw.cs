@@ -38,6 +38,7 @@ namespace ESP32ConGUI
                 double y = centerY + radius * Math.Sin(k * 2 * Math.PI / amountOfEdges);
                 Graph.Series[name].Points.AddXY(x, y);
             }
+            
         }
 
         public void DrawLine(Chart Graph, double z, int xShape_z)
@@ -60,6 +61,7 @@ namespace ESP32ConGUI
                 double y = z;
                 Graph.Series[name].Points.AddXY(x, y);
             }
+            
 
 
         }

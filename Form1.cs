@@ -24,7 +24,7 @@ namespace ESP32ConGUI
         int yShape = 3000;
 
         int xShape_z = 10;
-        int yShape_z = 10;
+        int yShape_z = 30;
 
         public Form1()
         {
@@ -50,7 +50,9 @@ namespace ESP32ConGUI
                     Console.WriteLine('\n');
                     ESP32Dialog.Invoke(new Action(() =>
                     {
-                        ESP32Dialog.Text = data[0].ToString() + " " + data[1].ToString() + " " + data[2].ToString();
+                        ESP32Dialog.Text = "X = " +  data[0].ToString() + Environment.NewLine +
+                                           "Y = " +  data[1].ToString() + Environment.NewLine +
+                                           "Z = " +  data[2].ToString();
 
                     }));
                 }
@@ -78,7 +80,7 @@ namespace ESP32ConGUI
 
         private async void ShowGraph()
         {
-            var random = new Random();
+            //var random = new Random();
             await Task.Run(() =>
             {
                 while (true)
@@ -86,12 +88,12 @@ namespace ESP32ConGUI
                     if (ESP32.PackageIsEmpty()) continue;
                     chart2.Invoke(new Action(() =>
                     {
-                        dr.DrawCircle(chart2, data[0] - 2650, data[1] - 2650, 60, 30);
+                        dr.DrawCircle(chart2, data[0] - 2800, data[1] - 2800, 60, 30);
                     }
                     ));
                     chart1.Invoke(new Action(() =>
                     {
-                        dr.DrawLine(chart1, data[2] + random.Next(-5, 5) ,xShape_z);
+                        dr.DrawLine(chart1, data[2] ,xShape_z);                    
                     }));
                     Thread.Sleep(50);
 
